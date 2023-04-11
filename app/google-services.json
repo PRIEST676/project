@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "937958370515",
+    "project_id": "voting-authentication",
+    "storage_bucket": "voting-authentication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937958370515:android:4410017069d79fe3b1f826",
+        "android_client_info": {
+          "package_name": "com.example.votingauthentication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937958370515-inkv518fsp1u1tr7qbe2p4obk1u7fccg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo1L600PrrRnTGH0GCy4oudhIrCvcGqRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937958370515-inkv518fsp1u1tr7qbe2p4obk1u7fccg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
