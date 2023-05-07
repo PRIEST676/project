@@ -1,14 +1,19 @@
 package com.example.votingauthentication;
 
-import androidx.annotation.NonNull;
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -20,12 +25,18 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.votingauthentication.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String COMPARE_URL = "http://10.0.2.2:5000/compare";
     String camera_image;
     String firebase_image;
+    public Long phone;
+    public String aadh1 = login.aadhar;
+    public String camimgg = camerapage.camimg;
+    Button ver;
+
     private void makePostRequest() {
         StringRequest postRequest = new StringRequest(Request.Method.POST, COMPARE_URL,
                 new Response.Listener<String>()
@@ -73,9 +89,8 @@ public class MainActivity extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("camera_image", "https://firebasestorage.googleapis.com/v0/b/voting-authentication.appspot.com/o/images%2Fmodi1.jpg?alt=media&token=035060f7-fd0a-4694-beed-dcff86e35c00");
-                params.put("firebase_image", "https://firebasestorage.googleapis.com/v0/b/voting-authentication.appspot.com/o/images%2Fmodi2.jpg?alt=media&token=43c3edad-af86-4629-a7b9-a33ab120b1d3");
-
+                params.put("camera_image", camera_image);
+                params.put("firebase_image", firebase_image);
                 return params;
             }
         };
@@ -89,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ImageView imgv = findViewById(R.id.iv);
+        setContentView(R.layout.camerapage);
+        ver = findViewById(R.id.verify1);
 
 
 
-        storageref = FirebaseStorage.getInstance().getReference().child("images/modi1.jpg");
+        storageref = FirebaseStorage.getInstance().getReference().child(camimgg);
 
         // Get the download URL asynchronously
         storageref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -107,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        storageref = FirebaseStorage.getInstance().getReference().child("images/modi2.jpg");
+        storageref = FirebaseStorage.getInstance().getReference().child("images/"+aadh1+ "/" +"FIREBASE");
 
         // Get the download URL asynchronously
         storageref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -124,7 +139,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
         makePostRequest();
+
+
 
 
 //        try{

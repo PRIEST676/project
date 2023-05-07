@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <EditText
+        android:id="@+id/aadharnumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/h5"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="Enter Aadhar number..."
+        android:inputType="number"
+        android:maxLength="12"
+
+        android:padding="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <Button
+        android:id="@+id/proceed"
+        android:layout_below="@id/aadharnumber"
+        android:layout_width="match_parent"
+        android:padding="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/black"
+        android:layout_marginLeft="20dp"
+
+        android:layout_height="wrap_content"
+        android:layout_marginTop="259dp"
+        android:text="Proceed"
+        android:onClick="proceed"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/aadharnumber" />
+
+
+
+    <TextView
+        android:id="@+id/h5"
+        android:text="VOTING AUTHENTICATION"
+        android:textColor="@android:color/background_dark"
+        android:padding="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
