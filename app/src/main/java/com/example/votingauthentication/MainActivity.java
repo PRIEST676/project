@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
     String camera_image1=camerapage.camera_image;
     String firebase_image1=camerapage.firebase_image;
     public Long phone;
-    //public String aadh1 = login.aadhar;
-    public String aadh1="828935857356";
+    public String aadh1 = login.aadhar;
+
     public String camimgg = camerapage.camimg;
     Button ver;
     TextView result;

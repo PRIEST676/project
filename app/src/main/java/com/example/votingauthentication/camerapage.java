@@ -50,8 +50,8 @@ public class camerapage extends AppCompatActivity {
     public static String camera_image;
     public static String firebase_image;
     StorageReference storageReference;
-    //public String aadh = login.aadhar;
-    public String aadh = "828935857356";
+    public String aadh = login.aadhar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
