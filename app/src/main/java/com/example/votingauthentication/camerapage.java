@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,12 +42,16 @@ public class camerapage extends AppCompatActivity {
     public static final int CAMERA_PERM_CODE = 101;
 
     ImageView selectedImage;
-    private Button cameraBtn;
+    private Button cameraBtn,proc;
+
 
     String currentPhotoPath,timeStamp;
     public static String camimg;
+    public static String camera_image;
+    public static String firebase_image;
     StorageReference storageReference;
-    public String aadh = login.aadhar;
+    //public String aadh = login.aadhar;
+    public String aadh = "828935857356";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,9 @@ public class camerapage extends AppCompatActivity {
 
         selectedImage = findViewById(R.id.imgCamera);
         cameraBtn = findViewById(R.id.btnCamera);
+        proc=findViewById(R.id.proceeed);
+
+
 
 
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -64,6 +72,13 @@ public class camerapage extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(camerapage.this,"camera Btn is clicked",Toast.LENGTH_SHORT).show();
                 askCameraPermission();
+            }
+        });
+
+        proc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                processf();
             }
         });
 
@@ -77,6 +92,11 @@ public class camerapage extends AppCompatActivity {
             dispatchTakePictureIntent();
             //openCamera();
         }
+    }
+
+    private void processf(){
+        Intent i = new Intent(camerapage.this,MainActivity.class);
+        startActivity(i);
     }
 
     @Override
@@ -93,10 +113,7 @@ public class camerapage extends AppCompatActivity {
 
     }
 
-    public void openCamera(){
-        Intent cam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(cam,CAMERA_REQUEST_CODE);
-    }
+
 
 
     @Override
@@ -121,16 +138,21 @@ public class camerapage extends AppCompatActivity {
     }
 
     private void uploadImageToFirebase(String name, Uri contentUri) {
-        StorageReference image = storageReference.child("images/"+aadh+"/" + timeStamp);
-        camimg="images/"+aadh+"/"+timeStamp;
+        StorageReference image = storageReference.child(aadh+"/" + timeStamp+".jpg");
+        camimg= aadh+"/"+timeStamp+".jpg";
         image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // Handle successful download URL generation
+                        camera_image = uri.toString();
+                        // Use the download URL as needed
+                        System.out.println(camera_image);
+                    }
+                });
                 Toast.makeText(camerapage.this,"upload success",Toast.LENGTH_SHORT).show();
-                Intent newact = new Intent(camerapage.this,MainActivity.class);
-                startActivity(newact);
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -138,7 +160,22 @@ public class camerapage extends AppCompatActivity {
                 Toast.makeText(camerapage.this,"upload failed",Toast.LENGTH_SHORT).show();
             }
         });
+
+        String b=aadh+"/"+"FIREBASE.JPG"; //"828935857356/FIREBASE.JPG"
+        StorageReference storageref = FirebaseStorage.getInstance().getReference().child(b);
+        storageref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Handle successful download URL generation
+                firebase_image = uri.toString();
+                // Use the download URL as needed
+                System.out.println(firebase_image);
+            }
+        });
+
     }
+
+
 
 
     private File createImageFile() throws IOException {
@@ -179,6 +216,6 @@ public class camerapage extends AppCompatActivity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
             }
-        //}
+       // }
     }
 }

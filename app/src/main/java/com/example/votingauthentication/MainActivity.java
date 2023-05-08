@@ -15,8 +15,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -52,13 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     private StorageReference storageref;
-    private static final String COMPARE_URL = "http://10.0.2.2:5000/compare";
-    String camera_image;
-    String firebase_image;
+    private static final String COMPARE_URL = "http://192.168.1.6:5000/compare";
+    String camera_image1=camerapage.camera_image;
+    String firebase_image1=camerapage.firebase_image;
     public Long phone;
-    public String aadh1 = login.aadhar;
+    //public String aadh1 = login.aadhar;
+    public String aadh1="828935857356";
     public String camimgg = camerapage.camimg;
     Button ver;
+    TextView result;
 
     private void makePostRequest() {
         StringRequest postRequest = new StringRequest(Request.Method.POST, COMPARE_URL,
@@ -70,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonobj = new JSONObject(response);
                             String data = jsonobj.getString("output");
                             System.out.println(data);
+                            result.setText(data);
 
                         } catch(JSONException e){
                             e.printStackTrace();
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Handle error
-                        error.printStackTrace();
+                        System.out.println(error);
                     }
                 }
         ) {
@@ -89,12 +94,15 @@ public class MainActivity extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("camera_image", camera_image);
-                params.put("firebase_image", firebase_image);
+                params.put("camera_image", camera_image1);
+                params.put("firebase_image", firebase_image1);
                 return params;
             }
         };
 
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(15000,
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
         queue.add(postRequest);
     }
@@ -104,43 +112,51 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.camerapage);
+        setContentView(R.layout.activity_main);
         ver = findViewById(R.id.verify1);
+        result = findViewById(R.id.result);
 
+//        String a=camimgg;
+//        storageref = FirebaseStorage.getInstance().getReference().child(a);
+//        // Get the download URL asynchronously
+//        storageref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                // Handle successful download URL generation
+//                camera_image1 = uri.toString();
+//                // Use the download URL as needed
+//                System.out.println(camera_image);
+//            }
+//        });
 
+//        String b=aadh1+"/"+"FIREBASE.JPG"; //"828935857356/FIREBASE.JPG"
+//        storageref = FirebaseStorage.getInstance().getReference().child(b);
+//
+//        // Get the download URL asynchronously
+//        storageref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//            @Override
+//            public void onSuccess(Uri uri) {
+//                // Handle successful download URL generation
+//                firebase_image = uri.toString();
+//                // Use the download URL as needed
+//                System.out.println(firebase_image);
+//            }
+//        });
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        storageref = FirebaseStorage.getInstance().getReference().child(camimgg);
-
-        // Get the download URL asynchronously
-        storageref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        ver.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(Uri uri) {
-                // Handle successful download URL generation
-                camera_image = uri.toString();
-                // Use the download URL as needed
-                System.out.println(camera_image);
+            public void onClick(View view) {
+                makePostRequest();
             }
         });
+        //makePostRequest();
 
-        storageref = FirebaseStorage.getInstance().getReference().child("images/"+aadh1+ "/" +"FIREBASE");
 
-        // Get the download URL asynchronously
-        storageref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Handle successful download URL generation
-                firebase_image = uri.toString();
-                // Use the download URL as needed
-                System.out.println(firebase_image);
-            }
-        });
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        makePostRequest();
 
 
 
