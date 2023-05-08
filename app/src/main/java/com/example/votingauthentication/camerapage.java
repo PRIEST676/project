@@ -46,7 +46,7 @@ public class camerapage extends AppCompatActivity {
 
 
     String currentPhotoPath,timeStamp;
-    public static String camimg;
+
     public static String camera_image;
     public static String firebase_image;
     StorageReference storageReference;
@@ -139,7 +139,7 @@ public class camerapage extends AppCompatActivity {
 
     private void uploadImageToFirebase(String name, Uri contentUri) {
         StorageReference image = storageReference.child(aadh+"/" + timeStamp+".jpg");
-        camimg= aadh+"/"+timeStamp+".jpg";
+
         image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

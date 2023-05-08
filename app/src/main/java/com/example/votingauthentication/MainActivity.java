@@ -53,14 +53,12 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    private StorageReference storageref;
+
     private static final String COMPARE_URL = "http://192.168.1.6:5000/compare";
     String camera_image1=camerapage.camera_image;
     String firebase_image1=camerapage.firebase_image;
-    public Long phone;
-    public String aadh1 = login.aadhar;
 
-    public String camimgg = camerapage.camimg;
+
     Button ver;
     TextView result;
 
